@@ -2,6 +2,8 @@
 
 const {Schema, model} = require('mongoose')
 
+const User = require('./user_model')
+const Comment = require('./comment_model')
 const postSchema = new Schema({
     title: {
         type: String,
@@ -15,7 +17,7 @@ const postSchema = new Schema({
     },
     author: {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: User,
         required: true,
     },
     tags: {
@@ -24,11 +26,17 @@ const postSchema = new Schema({
     },
     thumbnail: String,
     readTime: String,
-    likes: [Schema.Types.ObjectId],
-    dislikes: [Schema.Types.ObjectId],
+    likes: [{
+        type: Schema.Types.ObjectId,
+        ref: User,
+    }],
+    dislikes: [{
+        type: Schema.Types.ObjectId,
+        ref: User,
+    }],
     comments: [{
         type: Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: Comment,
     }]
 
 
