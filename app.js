@@ -1,16 +1,28 @@
 const express = require("express")
 
-const app = express()
-
 const authRouter = require('./routes/auth_route')
 
+const morgan = require('morgan')
+
+const app = express()
+///setup view engine
+app.set('view engine', 'ejs')
+app.set('views', 'views')
+
+
+const middleWareArray = [
+    morgan("dev"),
+    express.static('public'),
+    express.urlencoded({extended: true}),
+    express.json(),
+]
+app.use(middleWareArray)
 
 app.use(authRouter)
+
 app.get('/', (req, res) => {
 
-    res.json({
-        message: " test message"
-    });
+    res.render('pages/auth/sign_up', {title: "Sign up"});
 
 })
 
