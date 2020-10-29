@@ -2,11 +2,23 @@ const express = require("express")
 
 const app = express()
 
+const authRouter = require('./routes/auth_route')
 
+
+app.use(authRouter)
 app.get('/', (req, res) => {
 
     res.json({
         message: " test message"
+    });
+
+})
+
+
+app.get('*', (req, res) => {
+
+    res.json({
+        message: "error"
     });
 
 })
