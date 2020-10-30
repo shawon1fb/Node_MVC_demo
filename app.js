@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 app.get('*', (req, res) => {
 
     res.json({
-        message: "error"
+        message: "No Route with this end point"
     });
 
 })
