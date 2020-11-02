@@ -1,6 +1,6 @@
 const User = require('../models/user_model')
 
-exports.bindUserWithRequest =  () => {
+exports.bindUserWithRequest = () => {
     return async (req, res, next) => {
         if (!req.session.isLogin) {
             return next();
@@ -15,4 +15,13 @@ exports.bindUserWithRequest =  () => {
             next();
         }
     }
+}
+
+exports.isAuthenticate = (req, res, next) => {
+    console.log(req.session)
+    if (!req.session.isLogin) {
+        return res.redirect('/auth/signin')
+    }
+
+    next()
 }
