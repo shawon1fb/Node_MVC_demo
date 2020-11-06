@@ -78,8 +78,15 @@ exports.signInPostController = async (req, res, next) => {
 
         req.session.isLogin = true;
         req.session.user = user
+        req.session.save(err => {
+            if (err) {
+                console.log(err)
+                return next(err)
+            }
+            return res.redirect('/dashboard')
+        })
         // res.status(200).send({user})
-        return res.redirect('/dashboard')
+
 
     } catch (e) {
         return res.json({
@@ -91,21 +98,20 @@ exports.signInPostController = async (req, res, next) => {
 }
 
 
-exports.loginGetController = (req, res, next) => {
-    res.json({
-        test: "loginGetController",
-    })
-}
-
-exports.loginPostController = (req, res, next) => {
-    res.json({
-        test: "loginPostController",
-    })
-}
-
 exports.logout = (req, res, next) => {
+
+    req.session.destroy(error => {
+
+        if (error) {
+            console.log(error)
+            return next(error)
+        }
+
+        return res.redirect("/auth/signin")
+    })
+    /*
     res.json({
         test: "logout",
-    })
+    })*/
 }
 
