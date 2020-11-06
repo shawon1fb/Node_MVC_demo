@@ -2,6 +2,7 @@ const express = require("express")
 
 const authRouter = require('./routes/auth_route')
 const dashboardRouter = require('./routes/dashboard_route')
+const flash = require('connect-flash')
 
 const session = require('express-session')
 
@@ -39,6 +40,7 @@ const middleWareArray = [
     ),
     bindUserWithRequest(),
     setLocals(),
+    flash(),
 ]
 
 app.use(middleWareArray)
