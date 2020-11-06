@@ -20,6 +20,7 @@ exports.signUpPostController = async (req, res, next) => {
 
     let errors = validationResult(req).formatWith(errorFormatter)
     if (!errors.isEmpty()) {
+        console.log("signUpPostController")
         console.log(errors.mapped())
 
 
@@ -77,7 +78,8 @@ exports.signInPostController = async (req, res, next) => {
 
         req.session.isLogin = true;
         req.session.user = user
-        res.status(200).send({user})
+        // res.status(200).send({user})
+        return res.redirect('/dashboard')
 
     } catch (e) {
         return res.json({
