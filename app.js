@@ -50,10 +50,7 @@ app.use("/dashboard", dashboardRouter)
 
 app.get('/', (req, res) => {
 
-    res.render(
-        'pages/auth/sign_up',
-        {title: "Signup page", error: {}},
-    )
+    res.redirect('/auth/signin')
 
 })
 

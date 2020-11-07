@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt')
 const {body, validationResult} = require('express-validator')
 const errorFormatter = require('../utils/validatio_error_formater')
 
+const Flash = require('../utils/Flash')
+
 
 exports.signUpGetController = (req, res, next) => {
 
@@ -12,6 +14,7 @@ exports.signUpGetController = (req, res, next) => {
         {
             title: "Signup page",
             error: errors.mapped(),
+            flashMessage: Flash.getMessage(req)
         },
     )
 }
@@ -19,6 +22,7 @@ exports.signUpGetController = (req, res, next) => {
 exports.signUpPostController = async (req, res, next) => {
 
     let errors = validationResult(req).formatWith(errorFormatter)
+    req.flash('fail',"please check your form")
     if (!errors.isEmpty()) {
         console.log("signUpPostController")
         console.log(errors.mapped())
@@ -26,7 +30,11 @@ exports.signUpPostController = async (req, res, next) => {
 
         return res.render(
             'pages/auth/sign_up',
-            {title: "Signup page", error: errors.mapped()},
+            {
+                title: "Signup page",
+                error: errors.mapped(),
+                flashMessage: Flash.getMessage(req)
+            },
         )
         /*
         return res.json({
@@ -64,16 +72,21 @@ exports.signUpPostController = async (req, res, next) => {
 
 
 exports.signInGetController = (req, res, next) => {
-    console.log(req.session)
+    console.log("Flash.getMessage(req)")
+    console.log(Flash.getMessage(req))
     res.render(
         'pages/auth/sign_in',
-        {title: "SignIn page"}
+        {
+            title: "SignIn page",
+            flashMessage: Flash.getMessage(req)
+        }
     )
 }
 
 exports.signInPostController = async (req, res, next) => {
 
     try {
+
         const user = await User.findByCredentials(req.body.email, req.body.password)
 
         req.session.isLogin = true;
@@ -89,10 +102,13 @@ exports.signInPostController = async (req, res, next) => {
 
 
     } catch (e) {
-        return res.json({
+
+        req.flash('success',"please check your form")
+        return res.redirect('/auth/signin')
+        /*return res.json({
             test: "signInPostController",
             "error": e.toString(),
-        })
+        })*/
     }
 
 }
